@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/auth.service";
+import { DataService } from "src/app/data.service";
 import ls from "../../../app/utils/utils";
 
 export interface Item {
@@ -14,24 +15,18 @@ export interface Item {
 })
 export class DashboardComponent implements OnInit {
 	url!: string;
-	listOfurls: Item[] = [];
 	urlModel: any;
 	urlsArray: any = {};
 
-	constructor(private authService: AuthService) {}
-	ngOnInit() {}
+	constructor(
+		private authService: AuthService,
+		public dataService: DataService
+	) {}
 
-	onSmbit() {
-		if (this.listOfurls.length >= 5) {
-			this.listOfurls = this.listOfurls.slice(1);
-		}
-		this.listOfurls.push({
-			url: this.url,
-			timeStamp: new Date().toISOString(),
-		});
-		ls.set("Url", JSON.stringify(this.listOfurls));
-		this.listOfurls = JSON.parse(ls.get("Url") || "{}");
-		console.log(this.listOfurls);
-		this.url = "";
+	ngOnInit(): void {}
+
+	onSubmit() {
+		// console.log("onSubmit");
+		this.dataService.setData();
 	}
 }
